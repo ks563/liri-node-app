@@ -15,16 +15,17 @@ var findConcert = function (artist) {
                 console.log("An error occured: " + err);
                 return;
             } else {
-                var concertInfo =["The concert is at: " + concertData.data.venue.name,
+                var concertInfo = [
+                "The concert is at: " + concertData.data.venue.name,
                 "The venue is in: " + concertData.data.venue.city, + " " + concertData.data.venue.country,
                  "The concert is on: " + moment(concertData.data.datetime.format('MM/DD/YYYY')),
-            ]("\n\n");
+            ].join("\n\n");
             }
         }
     )
 };
 
-console.log(findConcert("Cher"));
+// console.log(findConcert("Cher"));
 
 //axios method from omdb in class practice
 //create function to use axios call to access omdb
@@ -36,7 +37,7 @@ var findMovie = function (movie) {
     // movie = process.argv[3];
     axios.get("http://www.omdbapi.com/?t=" + movie + "&plot=short&apikey=f728cb34").then(
         function (movieData, err) {
-            // console.log(movieData);
+            console.log(movieData.data);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
@@ -45,17 +46,19 @@ var findMovie = function (movie) {
                 movie = "Mr. Nobody";
             }
             else {
-                console.log("The movie title is: " + movieData.data.Title);
-                console.log("The IMdB rating is: " + movieData.data.imdbRating);
-                // console.log("The Rotten Tomatoes Rating is: "+ movieData.data.RottenTomatoesRatings[2]);
-                console.log("The movie language is: " + movieData.data.Language);
-                console.log("The movie Plot is: " + movieData.data.Plot);
-                console.log("The movie actors are: " + movieData.data.Actors);
+                var movieInfo = [
+                    "The movie title is: " + movieData.data.Title,
+                    "The IMdB rating is: " + movieData.data.Ratings[0],
+                    "The Rotten Tomatoes Rating is: " + movieData.data.Ratings[1],
+                    "The movie language is: " + movieData.data.Language,
+                    "The movie Plot is: " + movieData.data.Plot,
+                    "The movie actors are: " + movieData.data.Actors
+                ].join("\n\n");
             }
         })
 }
 
-// console.log(findMovie("bridesmaids"));
+console.log(findMovie("bridesmaids"));
 
 //create function to use spotify npm to call spotiy api
 // takes in song from user input
