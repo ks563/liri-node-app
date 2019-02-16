@@ -1,13 +1,19 @@
 require("dotenv").config();
 var keys = require("./keys.js");
+var axios = require("axios");
+var moment = require('moment');
+var fs = require("fs");
+var Spotify = require('node-spotify-api');
+
+var search = process.argv[2];
+var term = process.argv.slice(3).join(" ");
+
 
 //create function to use axios call to retrieve data from abnds intown api
 // takes in artist name to use in api call
 //is called by "concert-this"
 
 var findConcert = function (artist) {
-    var axios = require("axios");
-    var moment = require('moment');
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
         function (concertData, err) {
             
@@ -28,14 +34,11 @@ var findConcert = function (artist) {
             })
         }
     
-
 //axios method from omdb in class practice
 //create function to use axios call to access omdb
-// takes in title of movie
 // is called by "movie-this"
 
 var findMovie = function (movie) {
-    var axios = require("axios");
     // movie = process.argv[3];
     axios.get("http://www.omdbapi.com/?t=" + movie + "&plot=short&apikey=f728cb34").then(
         function (movieData, err) {
@@ -62,20 +65,12 @@ var findMovie = function (movie) {
         })
 }
 
-// console.log(findMovie("bridesmaids"));
+
 
 //create function to use spotify npm to call spotiy api
 // takes in song from user input
-//console.log artist
-//console.log song's name
-//console.log link to spotify
-//console.log album
-//if not song is entered return "the Sign" by ace of base
-//is called by "spotify-this"
 
 var songFinder = function (songQuery) {
-    var Spotify = require('node-spotify-api');
-   
     var spotify = new Spotify(keys.spotify);
 
     spotify.search({ type: 'track', query: songQuery}).then(
@@ -97,30 +92,27 @@ var songFinder = function (songQuery) {
             
          })
 };
-// console.log(songFinder("together again"));
 
-var doWhat = function(search) {
-    var fs = require("fs");
-    var text;
+var doWhat = function() {
     fs.readFile("./random.txt", "UTF-8", function (err, data) {
         if (err) { throw err; }
         console.log(data);
-        text = data;
+        var searchTerm = data.split(",")
+        var search = searchTerm[0];
+        var term = searchTerm[1];
+        runLiri(search, term);
     })
-    console.log(text);
 }
-doWhat();
 
 function runLiri(search, term) {
-    var search = process.argv[2];
-    var term = process.argv.slice(3).join(" ");
     if (search === "concert-this") {
         console.log(findConcert(term));
     } else if (search === "spotify-this-song") {
         console.log(songFinder(term));
     } else if (search === "movie-this") {
         console.log(findMovie(term));
+    } else if (search === "do-what-it-says") {
+        console.log(doWhat());
     }
 }
-
-// runLiri();
+ runLiri(search, term);
