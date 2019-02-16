@@ -15,14 +15,14 @@ var moment = require('moment');
 
 var findConcert = function (artist) {
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
-        function (err, data) {
+        function (err, concertData) {
             if (err) {
                 console.log("An error occured: " + err);
                 return;
             } else {
-                console.log("The concert is at: " + data.artist.venue);
-                console.log("The venue is in: " + data.artist.venue);
-                console.log("The concert is on: " + data.artist.datetime.moment().format('MM/DD/YYYY'));
+                console.log("The concert is at: " + concertData.artist.venue);
+                console.log("The venue is in: " + concertData.artist.venue);
+                console.log("The concert is on: " + concertData.artist.datetime.moment().format('MM/DD/YYYY'));
             }
         }
     )
@@ -42,12 +42,20 @@ var findConcert = function (artist) {
 // if no title is inputted return 'mr nobody'
 var findMovie = function (movie) {
     axios.get("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=f728cb34").then(
-        function (err, data) {
+        function (err, movieData) {
             if (err) {
                 console.log("An error occured: " + err);
                 return;
-            } else {
-                console.log()
+            } if (movie == " ") {
+                
+            }
+            else {
+                console.log("The movie title is: "+ movieData.movie.Title);
+                console.log("The IMdB rating is: "+ movieData.movie.Rating[0]);
+                console.log("The Rotten Tomatoes Rating is: "+ movieData.movie.Rating[1]);
+                console.log("The movie language is: "+ movieData.movie.Language);
+                console.log("The movie Plot is: "+ movieData.movie.Plot);
+                console.log("The movie title is: "+ movieData.movie.Actors);
             }
         })
 }
