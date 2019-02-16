@@ -17,20 +17,21 @@ var findConcert = function (artist) {
     var axios = require("axios");
     var moment = require('moment');
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
-        function (err, concertData) {
+        function (concertData, err) {
+            console.log(concertData);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
             } else {
-                console.log("The concert is at: " + concertData.artist.venue);
-                console.log("The venue is in: " + concertData.artist.venue);
-                console.log("The concert is on: " + concertData.artist.datetime.moment().format('MM/DD/YYYY'));
+                // console.log("The concert is at: " + concertData.artist.venue);
+                // console.log("The venue is in: " + concertData.artist.venue);
+                // console.log("The concert is on: " + concertData.artist.datetime.moment().format('MM/DD/YYYY'));
             }
         }
     )
 };
 
-// console.log(findConcert("James Blake"));
+console.log(findConcert("James Blake"));
 
 //axios method from omdb in class practice
 //create function to use axios call to access omdb
@@ -45,27 +46,27 @@ var findConcert = function (artist) {
 var findMovie = function (movie) {
     var axios = require("axios");
     axios.get("http://www.omdbapi.com/?t=" + movie + "&plot=short&apikey=f728cb34").then(
-        function (err, movieData) {
-            console.log(movieData);
+        function (movieData, err) {
+            // console.log(movieData);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
             }
-            // } if (movie == " ") {
-            //     movie = "Mr. Nobody";
-            // }
-            // else {
-            //     console.log("The movie title is: "+ movieData.movie.Title);
-            //     console.log("The IMdB rating is: "+ movieData.movie.Rating[0]);
-            //     console.log("The Rotten Tomatoes Rating is: "+ movieData.movie.Rating[1]);
-            //     console.log("The movie language is: "+ movieData.movie.Language);
-            //     console.log("The movie Plot is: "+ movieData.movie.Plot);
-            //     console.log("The movie title is: "+ movieData.movie.Actors);
-            // }
+            if (movie == " ") {
+                movie = "Mr. Nobody";
+            }
+            else {
+                console.log("The movie title is: "+ movieData.movie.data.Title);
+                console.log("The IMdB rating is: "+ movieData.movie.data.imdbRating[1]);
+                console.log("The Rotten Tomatoes Rating is: "+ movieData.movie.data.RottenTomatoesRatings[2]);
+                console.log("The movie language is: "+ movieData.movie.data.Language);
+                console.log("The movie Plot is: "+ movieData.movie.data.Plot);
+                console.log("The movie title is: "+ movieData.movie.data.Actors);
+            }
         })
 }
 
-console.log(findMovie("Steel Magnolias"));
+// console.log(findMovie("seabiscuit"));
 
 //create function to use spotify npm to call spotiy api
 // takes in song from user input
