@@ -101,8 +101,15 @@ var songFinder = function (songQuery) {
 
 var doWhat = function(search) {
     var fs = require("fs");
-    fs.readFile("random.txt")
+    var text;
+    fs.readFile("./random.txt", "UTF-8", function (err, data) {
+        if (err) { throw err; }
+        console.log(data);
+        text = data;
+    })
+    console.log(text);
 }
+doWhat();
 
 function runLiri(search, term) {
     var search = process.argv[2];
@@ -116,4 +123,4 @@ function runLiri(search, term) {
     }
 }
 
-runLiri();
+// runLiri();
