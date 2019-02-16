@@ -8,21 +8,23 @@ var keys = require("./keys.js");
 var findConcert = function (artist) {
     var axios = require("axios");
     var moment = require('moment');
-    artist = process.argv[3];
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
         function (concertData, err) {
-            console.log(concertData);
+            console.log(concertData.data);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
             } else {
-                console.log("The concert is at: " + concertData.data.venue);
-                console.log("The venue is in: " + concertData.data.venue);
-                console.log("The concert is on: " + moment(concertData.data.datetime.format('MM/DD/YYYY')));
+                var concertInfo =["The concert is at: " + concertData.data.venue.name,
+                "The venue is in: " + concertData.data.venue.city, + " " + concertData.data.venue.country,
+                 "The concert is on: " + moment(concertData.data.datetime.format('MM/DD/YYYY')),
+            ]("\n\n");
             }
         }
     )
 };
+
+console.log(findConcert("Cher"));
 
 //axios method from omdb in class practice
 //create function to use axios call to access omdb
@@ -31,7 +33,7 @@ var findConcert = function (artist) {
 
 var findMovie = function (movie) {
     var axios = require("axios");
-    movie = process.argv[3];
+    // movie = process.argv[3];
     axios.get("http://www.omdbapi.com/?t=" + movie + "&plot=short&apikey=f728cb34").then(
         function (movieData, err) {
             // console.log(movieData);
@@ -68,9 +70,9 @@ var songFinder = function () {
     var Spotify = require('node-spotify-api');
    
     var spotify = new Spotify(keys.spotify);
-    var song = process.argv[3];
+    var songQuery = process.argv[3];
 
-    spotify.search({ type: 'track', query: song}).then(
+    spotify.search({ type: 'track', query: songQuery}).then(
         function (songData, err) {
             if (err) {
                 console.log("An error occured: " + err);
@@ -79,9 +81,10 @@ var songFinder = function () {
                 song = "the sign";
             }
             else {
-                console.log(songData);
+                // console.log(songData);
+
             }
             
         })
 };
-console.log(songFinder());
+// console.log(songFinder( ));
