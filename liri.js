@@ -1,8 +1,8 @@
 require("dotenv").config();
 var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
-var axios = require("axios");
-var moment = require('moment');
+
+
 
 
 
@@ -14,6 +14,8 @@ var moment = require('moment');
 //is called by "concert-this"
 
 var findConcert = function (artist) {
+    var axios = require("axios");
+    var moment = require('moment');
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
         function (err, concertData) {
             if (err) {
@@ -30,7 +32,7 @@ var findConcert = function (artist) {
 
 // console.log(findConcert("James Blake"));
 
-
+//axios method from omdb in class practice
 //create function to use axios call to access omdb
 // takes in title of movie
 // console.log title
@@ -41,25 +43,29 @@ var findConcert = function (artist) {
 // console.log actors
 // if no title is inputted return 'mr nobody'
 var findMovie = function (movie) {
-    axios.get("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=f728cb34").then(
+    var axios = require("axios");
+    axios.get("http://www.omdbapi.com/?t=" + movie + "&plot=short&apikey=f728cb34").then(
         function (err, movieData) {
+            console.log(movieData);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
-            } if (movie == " ") {
-                
             }
-            else {
-                console.log("The movie title is: "+ movieData.movie.Title);
-                console.log("The IMdB rating is: "+ movieData.movie.Rating[0]);
-                console.log("The Rotten Tomatoes Rating is: "+ movieData.movie.Rating[1]);
-                console.log("The movie language is: "+ movieData.movie.Language);
-                console.log("The movie Plot is: "+ movieData.movie.Plot);
-                console.log("The movie title is: "+ movieData.movie.Actors);
-            }
+            // } if (movie == " ") {
+            //     movie = "Mr. Nobody";
+            // }
+            // else {
+            //     console.log("The movie title is: "+ movieData.movie.Title);
+            //     console.log("The IMdB rating is: "+ movieData.movie.Rating[0]);
+            //     console.log("The Rotten Tomatoes Rating is: "+ movieData.movie.Rating[1]);
+            //     console.log("The movie language is: "+ movieData.movie.Language);
+            //     console.log("The movie Plot is: "+ movieData.movie.Plot);
+            //     console.log("The movie title is: "+ movieData.movie.Actors);
+            // }
         })
 }
 
+console.log(findMovie("Steel Magnolias"));
 
 //create function to use spotify npm to call spotiy api
 // takes in song from user input
