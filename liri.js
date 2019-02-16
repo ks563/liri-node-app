@@ -10,24 +10,24 @@ var findConcert = function (artist) {
     var moment = require('moment');
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
         function (concertData, err) {
-            console.log(concertData.data);
+            
             if (err) {
                 console.log("An error occured: " + err);
                 return;
-            } else if(!artist){
-                artist = "Cher";
-            }else {
-                var concertInfo = [
-                "The concert is at: " + concertData.data.venue.name,
-                "The venue is in: " + concertData.data.venue.city, + " " + concertData.data.venue.country,
-                 "The concert is on: " + moment(concertData.data.datetime.format('MM/DD/YYYY')),
-            ].join("\n\n");
+            } else {
+                concertData.data.forEach(function (concert) {
+                    var concertInfo = [
+                        "The concert is at: " + concert.venue.name,
+                        "The venue is in: " + concert.venue.city + ", " + concert.venue.country,
+                        "The concert is on: " + moment(concert.datetime).format("MM/DD/YYYY"),
+                    ].join("\n\n");
+                    console.log(concertInfo);
+                });
             }
+                
+            })
         }
-    )
-};
-
-// console.log(findConcert("Cher"));
+    
 
 //axios method from omdb in class practice
 //create function to use axios call to access omdb
@@ -39,7 +39,7 @@ var findMovie = function (movie) {
     // movie = process.argv[3];
     axios.get("http://www.omdbapi.com/?t=" + movie + "&plot=short&apikey=f728cb34").then(
         function (movieData, err) {
-            console.log(movieData.data);
+            // console.log(movieData.data);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
@@ -50,12 +50,14 @@ var findMovie = function (movie) {
             else {
                 var movieInfo = [
                     "The movie title is: " + movieData.data.Title,
-                    "The IMdB rating is: " + movieData.data.Ratings[0],
-                    "The Rotten Tomatoes Rating is: " + movieData.data.Ratings[1],
+                    "The IMdB rating is: " + movieData.data.imdbRating,
+                    "The Rotten Tomatoes Rating is: " + movieData.data.Ratings[1].Value,
+                    "The movie was produced in: " + movieData.data.Country,
                     "The movie language is: " + movieData.data.Language,
                     "The movie Plot is: " + movieData.data.Plot,
                     "The movie actors are: " + movieData.data.Actors
                 ].join("\n\n");
+                console.log(movieInfo);
             }
         })
 }
@@ -75,27 +77,32 @@ var songFinder = function (songQuery) {
     var Spotify = require('node-spotify-api');
    
     var spotify = new Spotify(keys.spotify);
-    var songQuery = process.argv[2];
 
     spotify.search({ type: 'track', query: songQuery}).then(
         function (songData, err) {
-            console.log(songData.tracks.items);
+            // console.log(songData.tracks.items[0]);
             if (err) {
                 console.log("An error occured: " + err);
-                return;
+            } else if (!songQuery){
+                songQuery = "the sign";
+            }else {
+                var songInfo = [
+                    "The artist is " + songData.tracks.items[0].artists[0].name,
+                    "The song is " + songData.tracks.items[0].name,
+                    "The link is " + songData.tracks.items[0].preview_url,
+                    "The album is " + songData.tracks.items[0].album.name
+                ].join("\n\n");
+                console.log(songInfo);
             }
-        //     } if (!songQuery){
-        //         songQuery = "the sign";
-        //     }
-        //     else {
-        //         console.log(songData);
-        //     }
             
          })
 };
-// console.log(songFinder());
+// console.log(songFinder("together again"));
 
-
+var doWhat = function(search) {
+    var fs = require("fs");
+    fs.readFile("random.txt")
+}
 
 function runLiri(search, term) {
     var search = process.argv[2];
@@ -106,7 +113,7 @@ function runLiri(search, term) {
         console.log(songFinder(term));
     } else if (search === "movie-this") {
         console.log(findMovie(term));
-    } else if (search === "do-what-it-says") {
-        console.log(function());
     }
 }
+
+runLiri();
