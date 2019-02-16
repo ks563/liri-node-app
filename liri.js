@@ -1,10 +1,4 @@
 require("dotenv").config();
-var keys = require("./keys.js");
-var Spotify = require('node-spotify-api');
-
-
-
-
 
 //create function to use axios call to retrieve data from abnds intown api
 // takes in artist name to use in api call
@@ -23,15 +17,15 @@ var findConcert = function (artist) {
                 console.log("An error occured: " + err);
                 return;
             } else {
-                // console.log("The concert is at: " + concertData.artist.venue);
-                // console.log("The venue is in: " + concertData.artist.venue);
-                // console.log("The concert is on: " + concertData.artist.datetime.moment().format('MM/DD/YYYY'));
+                console.log("The concert is at: " + concertData.data.venue);
+                console.log("The venue is in: " + concertData.data.venue);
+                console.log("The concert is on: " + moment(concertData.data.datetime.format('MM/DD/YYYY')));
             }
         }
     )
 };
 
-console.log(findConcert("James Blake"));
+console.log(findConcert("Cher"));
 
 //axios method from omdb in class practice
 //create function to use axios call to access omdb
@@ -56,17 +50,17 @@ var findMovie = function (movie) {
                 movie = "Mr. Nobody";
             }
             else {
-                console.log("The movie title is: "+ movieData.movie.data.Title);
-                console.log("The IMdB rating is: "+ movieData.movie.data.imdbRating[1]);
-                console.log("The Rotten Tomatoes Rating is: "+ movieData.movie.data.RottenTomatoesRatings[2]);
-                console.log("The movie language is: "+ movieData.movie.data.Language);
-                console.log("The movie Plot is: "+ movieData.movie.data.Plot);
-                console.log("The movie title is: "+ movieData.movie.data.Actors);
+                console.log("The movie title is: "+ movieData.data.Title);
+                console.log("The IMdB rating is: "+ movieData.data.imdbRating);
+                // console.log("The Rotten Tomatoes Rating is: "+ movieData.data.RottenTomatoesRatings[2]);
+                console.log("The movie language is: "+ movieData.data.Language);
+                console.log("The movie Plot is: "+ movieData.data.Plot);
+                console.log("The movie actors are: "+ movieData.data.Actors);
             }
         })
 }
 
-// console.log(findMovie("seabiscuit"));
+// console.log(findMovie("bridesmaids"));
 
 //create function to use spotify npm to call spotiy api
 // takes in song from user input
@@ -75,3 +69,10 @@ var findMovie = function (movie) {
 //console.log link to spotify
 //console.log album
 //if not song is entered return "the Sign" by ace of base
+
+var songFinder = function (song) {
+    var keys = require("./keys.js");
+    var Spotify = require('node-spotify-api');
+    var spotify = new Spotify(keys.spotify);
+
+}
