@@ -14,7 +14,9 @@ var findConcert = function (artist) {
             if (err) {
                 console.log("An error occured: " + err);
                 return;
-            } else {
+            } else if(!artist){
+                artist = "Cher";
+            }else {
                 var concertInfo = [
                 "The concert is at: " + concertData.data.venue.name,
                 "The venue is in: " + concertData.data.venue.city, + " " + concertData.data.venue.country,
@@ -42,7 +44,7 @@ var findMovie = function (movie) {
                 console.log("An error occured: " + err);
                 return;
             }
-            if (movie == " ") {
+            else if (!movie) {
                 movie = "Mr. Nobody";
             }
             else {
@@ -58,7 +60,7 @@ var findMovie = function (movie) {
         })
 }
 
-console.log(findMovie("bridesmaids"));
+// console.log(findMovie("bridesmaids"));
 
 //create function to use spotify npm to call spotiy api
 // takes in song from user input
@@ -69,25 +71,42 @@ console.log(findMovie("bridesmaids"));
 //if not song is entered return "the Sign" by ace of base
 //is called by "spotify-this"
 
-var songFinder = function () {
+var songFinder = function (songQuery) {
     var Spotify = require('node-spotify-api');
    
     var spotify = new Spotify(keys.spotify);
-    var songQuery = process.argv[3];
+    var songQuery = process.argv[2];
 
     spotify.search({ type: 'track', query: songQuery}).then(
         function (songData, err) {
+            console.log(songData.tracks.items);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
-            } if (song = " " ){
-                song = "the sign";
             }
-            else {
-                // console.log(songData);
-
-            }
+        //     } if (!songQuery){
+        //         songQuery = "the sign";
+        //     }
+        //     else {
+        //         console.log(songData);
+        //     }
             
-        })
+         })
 };
-// console.log(songFinder( ));
+// console.log(songFinder());
+
+
+
+function runLiri(search, term) {
+    var search = process.argv[2];
+    var term = process.argv.slice(3).join(" ");
+    if (search === "concert-this") {
+        console.log(findConcert(term));
+    } else if (search === "spotify-this-song") {
+        console.log(songFinder(term));
+    } else if (search === "movie-this") {
+        console.log(findMovie(term));
+    } else if (search === "do-what-it-says") {
+        console.log(function());
+    }
+}
