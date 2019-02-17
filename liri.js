@@ -16,7 +16,6 @@ var term = process.argv.slice(3).join(" ");
 var findConcert = function (artist) {
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
         function (concertData, err) {
-            
             if (err) {
                 console.log("An error occured: " + err);
                 return;
@@ -54,10 +53,11 @@ var findMovie = function (movie) {
                 var movieInfo = [
                     "The movie title is: " + movieData.data.Title,
                     "The IMdB rating is: " + movieData.data.imdbRating,
+                    //if there's no rotten tomatoes rating it throws an error, so only movies with rotten tomatoes ratings work
                     "The Rotten Tomatoes Rating is: " + movieData.data.Ratings[1].Value,
                     "The movie was produced in: " + movieData.data.Country,
                     "The movie language is: " + movieData.data.Language,
-                    "The movie Plot is: " + movieData.data.Plot,
+                    "The movie plot is: " + movieData.data.Plot,
                     "The movie actors are: " + movieData.data.Actors
                 ].join("\n\n");
                 console.log(movieInfo);
@@ -96,10 +96,10 @@ var songFinder = function (songQuery) {
 var doWhat = function() {
     fs.readFile("./random.txt", "UTF-8", function (err, data) {
         if (err) { throw err; }
-        console.log(data);
+        // console.log(data);
         var searchTerm = data.split(",")
-        var search = searchTerm[0];
-        var term = searchTerm[1];
+        search = searchTerm[0];
+        term = searchTerm[1];
         runLiri(search, term);
     })
 }
