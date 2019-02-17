@@ -38,10 +38,8 @@ var findConcert = function (artist) {
 // is called by "movie-this"
 
 var findMovie = function (movie) {
-    // movie = process.argv[3];
     axios.get("http://www.omdbapi.com/?t=" + movie + "&plot=short&apikey=f728cb34").then(
         function (movieData, err) {
-            // console.log(movieData.data);
             if (err) {
                 console.log("An error occured: " + err);
                 return;
@@ -101,18 +99,19 @@ var doWhat = function() {
         search = searchTerm[0];
         term = searchTerm[1];
         runLiri(search, term);
+        // console.log(searchTerm);
     })
 }
 
 function runLiri(search, term) {
     if (search === "concert-this") {
-        console.log(findConcert(term));
+        findConcert(term);
     } else if (search === "spotify-this-song") {
-        console.log(songFinder(term));
+        songFinder(term);
     } else if (search === "movie-this") {
-        console.log(findMovie(term));
+        findMovie(term);
     } else if (search === "do-what-it-says") {
-        console.log(doWhat());
+        doWhat();
     }
 }
  runLiri(search, term);
